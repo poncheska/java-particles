@@ -48,15 +48,15 @@ public class Particle {
         float d;
         deformationCount++;
         if(deformationCount<10){
-            d = deformationCount*radius/40;
+            d = deformationCount*radius/20;
         }else {
-            d = (20 - deformationCount)*radius/40;
+            d = (20 - deformationCount)*radius/20;
         }
         int parts = 50;
         for(int i = 0; i < parts;i++){
             float angle =(float) (2f * Math.PI * i /parts) ;
-            GL11.glVertex2f((float) (position.getX() + (dcos*(radius + d) * Math.cos(angle) - dsin*(radius - d) * Math.sin(angle))),
-                    (float) (position.getY() + (dsin*(radius + d) * Math.cos(angle) + dcos*(radius - d) * Math.sin(angle))));
+            GL11.glVertex2f((float) (position.getX() + (dcos*(radius - d) * Math.cos(angle) - dsin*(radius + d) * Math.sin(angle))),
+                    (float) (position.getY() + (dsin*(radius - d) * Math.cos(angle) + dcos*(radius + d) * Math.sin(angle))));
         }
         if(deformationCount == 20) {
             isHited = false;

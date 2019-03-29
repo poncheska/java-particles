@@ -32,7 +32,7 @@ public class BouncingBalls {
                 }else if(particle.getX() > Display.getWidth() - particle.getRadius()){
                     particle.setPosition(new Vector2f(Display.getWidth() - particle.getRadius(),particle.getY()));
                 }
-                particle.hit(particle.getX(), 0);
+                particle.hit(0, particle.getY());
                 particle.setVelocity(new Vector2f(-1f*particle.getVelocity().x, particle.getVelocity().y));
             }
 
@@ -43,7 +43,7 @@ public class BouncingBalls {
                 }else if(particle.getY() >= Display.getHeight() -particle.getRadius()){
                     particle.setPosition(new Vector2f(particle.getX(), Display.getHeight() -particle.getRadius()));
                 }
-                particle.hit(0, particle.getY());
+                particle.hit(particle.getX(), 0);
                 particle.setVelocity(new Vector2f(particle.getVelocity().x, -1f*particle.getVelocity().y));
             }
 
@@ -56,6 +56,7 @@ public class BouncingBalls {
                     particle.hit(particle1.getX(), particle1.getY());
                     particle.setVelocity(velocityCalc(particle.getX(),particle.getY(),particle1.getX(),
                             particle1.getY(), particle.getVelocity()));
+                    particle1.hit(particle.getX(), particle.getY());
                     particle1.setVelocity(velocityCalc(particle1.getX(),particle1.getY(),particle.getX(),
                             particle.getY(), particle1.getVelocity()));
                 }

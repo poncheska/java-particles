@@ -22,7 +22,7 @@ public class Application {
         GL11.glOrtho(0, menu.getWidth(), menu.getHeight(), 0, 1 ,-1 );
         GL11.glClearColor(0, 0 ,0 ,1);
 
-        BouncingBalls p = new BouncingBalls(100);
+        BouncingBalls p = new BouncingBalls(50);
 
         while(!Display.isCloseRequested()){
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
