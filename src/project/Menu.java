@@ -9,7 +9,7 @@ public class Menu implements Runnable{
     private boolean fullScreen;
     public void run(){
         JPanel jPanel = new JPanel();
-        jPanel.setLayout(new GridLayout(3, 2));
+        jPanel.setLayout(new GridLayout( 4, 2));
 
 
         JSpinner width = new JSpinner();
@@ -32,12 +32,29 @@ public class Menu implements Runnable{
             this.fullScreen = fullScreen.isSelected();
         });
 
+        JLabel modeLabel = new JLabel("Bouncing Balls");
+
+        JSlider mode = new JSlider(SwingConstants.HORIZONTAL,1, 2, 1);
+        mode.addChangeListener(e -> {
+            switch(mode.getValue()){
+                case(1):
+                    modeLabel.setText("Bouncing Balls");
+                    break;
+                case(2):
+                    modeLabel.setText("Particle System");
+                    break;
+            }
+        });
+
+
         jPanel.add(new JLabel("Width:"));
         jPanel.add(width);
         jPanel.add(new JLabel("Height:"));
         jPanel.add(height);
         jPanel.add(new JLabel("Fullscreen:"));
         jPanel.add(fullScreen);
+        jPanel.add(modeLabel);
+        jPanel.add(mode);
 
         if (JOptionPane.showConfirmDialog(null, jPanel, "ParticleSystem settings", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION) {
             return;

@@ -1,10 +1,10 @@
-package project;
+package project.bouncingballs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.opengl.GL11;
 import java.util.Random;
 
-public class Particle {
+public class Ball {
     private Vector2f velocity;
     private float radius;
     private Vector2f position;
@@ -12,7 +12,9 @@ public class Particle {
     private float dcos;
     private float dsin;
     private int deformationCount;
-    public Particle(float x, float y, float radius){
+    private final int DEFORMATION_AMPLITUDE = 10;
+    private final int CIRCLE_PARTS = 50;
+    public Ball(float x, float y, float radius){
         position = new Vector2f(x,y);
         this.velocity = new Vector2f((float) (Math.random() * 2.0f - 1.0f)*2f, (float) (Math.random() * 2.0f - 1.0f)*2f);
         this.radius = radius;
@@ -25,9 +27,8 @@ public class Particle {
         if(this.isHited){
             deformation();
         }else {
-        int parts = 50;
-        for(int i = 0; i < parts;i++){
-            float angle =(float) (2f * Math.PI * i /parts) ;
+        for(int i = 0; i < CIRCLE_PARTS;i++){
+            float angle =(float) (2f * Math.PI * i /CIRCLE_PARTS) ;
                 GL11.glVertex2f((float) (position.getX() + radius * Math.cos(angle)),
                         (float) (position.getY() + radius * Math.sin(angle)));
             }
@@ -47,30 +48,29 @@ public class Particle {
     private void deformation(){
         float d;
         deformationCount++;
-        if(deformationCount<10){
-            d = deformationCount*radius/20;
+        if(deformationCount<DEFORMATION_AMPLITUDE){
+            d = deformationCount*radius/(DEFORMATION_AMPLITUDE*2);
         }else {
-            d = (20 - deformationCount)*radius/20;
+            d = (DEFORMATION_AMPLITUDE*2 - deformationCount)*radius/(DEFORMATION_AMPLITUDE*2);
         }
-        int parts = 50;
-        for(int i = 0; i < parts;i++){
-            float angle =(float) (2f * Math.PI * i /parts) ;
+        for(int i = 0; i < CIRCLE_PARTS;i++){
+            float angle =(float) (2f * Math.PI * i /CIRCLE_PARTS) ;
             GL11.glVertex2f((float) (position.getX() + (dcos*(radius - d) * Math.cos(angle) - dsin*(radius + d) * Math.sin(angle))),
                     (float) (position.getY() + (dsin*(radius - d) * Math.cos(angle) + dcos*(radius + d) * Math.sin(angle))));
         }
-        if(deformationCount == 20) {
+        if(deformationCount == DEFORMATION_AMPLITUDE*2) {
             isHited = false;
             deformationCount = 0;
         }
     }
 
 
-    public static Particle generateParticle(){
+    public static Ball generateParticle(){
         Random random =new Random();
         float radius = (float) (Math.random() * 5.0f) + 5.0f;
         float x = random.nextInt((int)(Display.getWidth() - 2*radius -1)) + radius;
         float y = random.nextInt((int)(Display.getHeight() - 2*radius -1)) + radius;
-        return new Particle(x, y, radius);
+        return new Ball(x, y, radius);
     }
 
     public void tick(){
@@ -81,6 +81,8 @@ public class Particle {
     public void setVelocity(Vector2f velocity) {this.velocity = velocity;}
 
     public Vector2f getVelocity(){return velocity; }
+
+    public float getVelocityNum(){return (float) Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y); }
 
     public float getRadius(){return radius; }
 

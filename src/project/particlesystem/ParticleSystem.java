@@ -1,4 +1,4 @@
-package project;
+package project.particlesystem;
 
 public class ParticleSystem {
     public ParticleSystem(){
