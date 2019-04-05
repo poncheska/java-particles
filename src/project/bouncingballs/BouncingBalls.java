@@ -12,17 +12,19 @@ public class BouncingBalls {
     private int divNumber;
     private int maxNumber;
     private float averageRadius;
+    private boolean traceON;
 
-    public BouncingBalls(int number, int divNumber, int maxNumber, int averageRadius){
+    public BouncingBalls(int number, int divNumber, int maxNumber, int averageRadius, boolean traceON){
         this.divNumber = divNumber;
         this.maxNumber = maxNumber;
         this.averageRadius = (float)averageRadius;
+        this.traceON = traceON;
         initParticleList(number);
     }
 
     public void initParticleList(int number){
         for(int i = 0; i<number;i++){
-            ballList.add(Ball.generateParticle(averageRadius));
+            ballList.add(Ball.generateParticle(averageRadius, traceON));
         }
     }
 
@@ -83,8 +85,8 @@ public class BouncingBalls {
 
 
         for(Ball del:delList1){
-            ballList.add(new Ball(del.getX()-5f, del.getY()+5f,(float)(del.getRadius()/Math.sqrt(2))));
-            ballList.add(new Ball(del.getX()+5f, del.getY()-5f,(float)(del.getRadius()/Math.sqrt(2))));
+            ballList.add(new Ball(del.getX()-5f, del.getY()+5f,(float)(del.getRadius()/Math.sqrt(2)),traceON));
+            ballList.add(new Ball(del.getX()+5f, del.getY()-5f,(float)(del.getRadius()/Math.sqrt(2)),traceON));
             ballList.remove(del);
         }
 
@@ -93,7 +95,7 @@ public class BouncingBalls {
             ballList.add(new Ball((delList2.get(i).getX()+delList2.get(i+1).getX())/2,
                     (delList2.get(i).getY()+delList2.get(i+1).getY())/2,
                     (float)Math.sqrt(delList2.get(i).getRadius()*delList2.get(i).getRadius() +
-                            delList2.get(i+1).getRadius()*delList2.get(i+1).getRadius())));
+                            delList2.get(i+1).getRadius()*delList2.get(i+1).getRadius()),traceON));
             ballList.remove(delList2.get(i));
             ballList.remove(delList2.get(i+1));
         }

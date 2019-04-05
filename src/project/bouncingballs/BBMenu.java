@@ -8,10 +8,11 @@ public class BBMenu implements Runnable{
     private int divNumber = 100;
     private int maxNumber = 400;
     private int averageRadius = 20;
+    private boolean trace = false;
 
     public void run() {
         JPanel jPanel = new JPanel();
-        jPanel.setLayout(new GridLayout(4, 2));
+        jPanel.setLayout(new GridLayout(5, 2));
 
         JLabel numberLabel = new JLabel("Number of balls(80):");
         JSlider number = new JSlider(SwingConstants.HORIZONTAL,20, 1000, 80);
@@ -48,6 +49,12 @@ public class BBMenu implements Runnable{
             this.averageRadius = averageRadius.getValue();
             averageRadiusLabel.setText("Average radius("+ this.averageRadius +"):");
         });
+
+        JCheckBox trace = new JCheckBox("");
+        trace.addChangeListener(e -> {
+            this.trace = trace.isSelected();
+        });
+
         jPanel.add(numberLabel);
         jPanel.add(number);
         jPanel.add(maxNumberLabel);
@@ -56,6 +63,8 @@ public class BBMenu implements Runnable{
         jPanel.add(divNumber);
         jPanel.add(averageRadiusLabel);
         jPanel.add(averageRadius);
+        jPanel.add(new Label("Turn on trace:"));
+        jPanel.add(trace);
         if (JOptionPane.showConfirmDialog(null, jPanel, "Bouncing Balls mode settings", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION) {
             return;
         }
@@ -68,4 +77,6 @@ public class BBMenu implements Runnable{
     public int getMaxNumber() {return maxNumber; }
 
     public int getNumber() {return number; }
+
+    public boolean isTrace() {return trace; }
 }

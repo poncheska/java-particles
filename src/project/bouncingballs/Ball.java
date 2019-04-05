@@ -14,14 +14,22 @@ public class Ball {
     private int deformationCount;
     private final int DEFORMATION_AMPLITUDE = 5;
     private final int CIRCLE_PARTS = 50;
-    public Ball(float x, float y, float radius){
+    private Trace trace;
+    private boolean traceON;
+
+    public Ball(float x, float y, float radius, boolean traceON){
+        this.traceON = traceON;
         position = new Vector2f(x,y);
         this.velocity = new Vector2f((float) (Math.random() * 2.0f - 1.0f)*2f, (float) (Math.random() * 2.0f - 1.0f)*2f);
         this.radius = radius;
         deformationCount = 0;
+        trace = new Trace(radius);
     }
 
     public void render(){
+        if(traceON) {
+            trace.render(velocity, position);
+        }
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         GL11.glBegin(GL11.GL_POLYGON);
         if(this.isHited){
@@ -65,12 +73,12 @@ public class Ball {
     }
 
 
-    public static Ball generateParticle(float averageRadius){
+    public static Ball generateParticle(float averageRadius, boolean traceON){
         Random random =new Random();
         float radius = (float) ((Math.random() * averageRadius/2) + averageRadius/2);
         float x = random.nextInt((int)(Display.getWidth() - 2*radius -1)) + radius;
         float y = random.nextInt((int)(Display.getHeight() - 2*radius -1)) + radius;
-        return new Ball(x, y, radius);
+        return new Ball(x, y, radius, traceON);
     }
 
     public void tick(){
