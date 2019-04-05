@@ -6,7 +6,8 @@ import java.awt.*;
 public class Menu implements Runnable{
     private int width = 1280;
     private int height = 720;
-    private boolean fullScreen;
+    private boolean fullScreen = false;
+    private int mode = 1;
     public void run(){
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new GridLayout( 4, 2));
@@ -34,14 +35,16 @@ public class Menu implements Runnable{
 
         JLabel modeLabel = new JLabel("Bouncing Balls");
 
-        JSlider mode = new JSlider(SwingConstants.HORIZONTAL,1, 2, 1);
+        JSlider mode = new JSlider(SwingConstants.HORIZONTAL,1, 1, 1);
         mode.addChangeListener(e -> {
             switch(mode.getValue()){
                 case(1):
                     modeLabel.setText("Bouncing Balls");
+                    this.mode = 1;
                     break;
                 case(2):
                     modeLabel.setText("Particle System");
+                    this.mode = 2;
                     break;
             }
         });
@@ -60,6 +63,9 @@ public class Menu implements Runnable{
             return;
         }
     }
+    public boolean getFullScreen(){ return fullScreen; }
+
+    public int getMode() { return mode; }
 
     public int getWidth(){
         return width;

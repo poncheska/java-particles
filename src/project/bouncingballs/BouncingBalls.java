@@ -1,6 +1,7 @@
 package project.bouncingballs;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.Renderable;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
@@ -8,21 +9,26 @@ import java.util.List;
 
 public class BouncingBalls {
     private List<Ball> ballList = new ArrayList<>();
+    private int divNumber;
+    private int maxNumber;
+    private float averageRadius;
 
-    public BouncingBalls(int number){
+    public BouncingBalls(int number, int divNumber, int maxNumber, int averageRadius){
+        this.divNumber = divNumber;
+        this.maxNumber = maxNumber;
+        this.averageRadius = (float)averageRadius;
         initParticleList(number);
     }
 
     public void initParticleList(int number){
         for(int i = 0; i<number;i++){
-            ballList.add(Ball.generateParticle());
+            ballList.add(Ball.generateParticle(averageRadius));
         }
     }
 
     public void render(){
         List<Ball> delList1 = new ArrayList<>();
         List<Ball> delList2 = new ArrayList<>();
-        int shift = 0;
         for(Ball ball : ballList){
             ball.render();
             ball.tick();

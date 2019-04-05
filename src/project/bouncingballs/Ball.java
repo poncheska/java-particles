@@ -12,7 +12,7 @@ public class Ball {
     private float dcos;
     private float dsin;
     private int deformationCount;
-    private final int DEFORMATION_AMPLITUDE = 10;
+    private final int DEFORMATION_AMPLITUDE = 5;
     private final int CIRCLE_PARTS = 50;
     public Ball(float x, float y, float radius){
         position = new Vector2f(x,y);
@@ -65,9 +65,9 @@ public class Ball {
     }
 
 
-    public static Ball generateParticle(){
+    public static Ball generateParticle(float averageRadius){
         Random random =new Random();
-        float radius = (float) (Math.random() * 5.0f) + 5.0f;
+        float radius = (float) ((Math.random() * averageRadius/2) + averageRadius/2);
         float x = random.nextInt((int)(Display.getWidth() - 2*radius -1)) + radius;
         float y = random.nextInt((int)(Display.getHeight() - 2*radius -1)) + radius;
         return new Ball(x, y, radius);
