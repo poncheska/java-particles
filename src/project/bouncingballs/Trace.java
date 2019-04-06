@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Trace {
-    private final int TRACE_LENGTH = 3;
+    private final int TRACE_LENGTH = 10;
     private float radius;
     private float partSize;
     private ArrayList<Vector2f> randTrace = new ArrayList<>();
@@ -16,25 +16,31 @@ public class Trace {
 
     public Trace(float radius){
         this.radius = radius;
-        this.partSize = radius/10;
+        this.partSize = radius/20;
     }
 
     public void render(Vector2f velocity, Vector2f position){
 
         addTracePart(velocity, position);
         for(Vector2f tr:leftTrace){
+            float color = (float)leftTrace.indexOf(tr)/(float)TRACE_LENGTH;
+            GL11.glColor4f(color, color, color, 1.0f);
             GL11.glPointSize(partSize);
             GL11.glBegin(GL11.GL_POINTS);
             GL11.glVertex2f(tr.getX(), tr.getY());
             GL11.glEnd();
         }
         for(Vector2f tr:rightTrace){
+            float color = (float)rightTrace.indexOf(tr)/(float)TRACE_LENGTH;
+            GL11.glColor4f(color, color, color, 1.0f);
             GL11.glPointSize(partSize);
             GL11.glBegin(GL11.GL_POINTS);
             GL11.glVertex2f(tr.getX(), tr.getY());
             GL11.glEnd();
         }
         for(Vector2f tr:randTrace){
+            float color = (float)randTrace.indexOf(tr)/(float)(TRACE_LENGTH*10);
+            GL11.glColor4f(color, color, color, 1.0f);
             GL11.glPointSize(partSize);
             GL11.glBegin(GL11.GL_POINTS);
             GL11.glVertex2f(tr.getX(), tr.getY());
@@ -48,7 +54,7 @@ public class Trace {
         if(rightTrace.size()>TRACE_LENGTH){
             rightTrace.remove(0);
         }
-        while(randTrace.size()>TRACE_LENGTH*5){
+        while(randTrace.size()>TRACE_LENGTH*10){
             randTrace.remove(0);
         }
     }
@@ -61,7 +67,7 @@ public class Trace {
                 position.getY() + vectorN.getY()*lengthN1));
         rightTrace.add(new Vector2f(position.getX() - vectorN.getX()*lengthN1,
                 position.getY() - vectorN.getY()*lengthN1));
-        for(int i = 0; i < (int) (Math.random()*10); i++){
+        for(int i = 0; i < (int) (Math.random()*20); i++){
             randTrace.add(new Vector2f(position.getX() + vectorN.getX()*(float)(lengthN1 - 2*lengthN1*Math.random())
                     -(float)(velocity.getX()/lengthN *radius * Math.random()),
                     position.getY() + vectorN.getY()*(float)(lengthN1 - 2*lengthN1*Math.random()
