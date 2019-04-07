@@ -38,7 +38,7 @@ public class Application {
                 bbMenu.run();
 
                 BouncingBalls p = new BouncingBalls(bbMenu.getNumber(),bbMenu.getDivNumber(),
-                        bbMenu.getMaxNumber(),bbMenu.getAverageRadius(),bbMenu.isTrace());
+                        bbMenu.getMaxNumber(),bbMenu.getAverageRadius(),bbMenu.isTrace(),bbMenu.isHoldMouse());
 
                 while(!Display.isCloseRequested()){
                     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);

@@ -9,10 +9,11 @@ public class BBMenu implements Runnable{
     private int maxNumber = 400;
     private int averageRadius = 20;
     private boolean trace = false;
+    private boolean holdMouse = false;
 
     public void run() {
         JPanel jPanel = new JPanel();
-        jPanel.setLayout(new GridLayout(5, 2));
+        jPanel.setLayout(new GridLayout(6, 2));
 
         JLabel numberLabel = new JLabel("Number of balls(80):");
         JSlider number = new JSlider(SwingConstants.HORIZONTAL,20, 1000, 80);
@@ -55,6 +56,11 @@ public class BBMenu implements Runnable{
             this.trace = trace.isSelected();
         });
 
+        JCheckBox holdMouse = new JCheckBox("");
+        holdMouse.addChangeListener(e -> {
+            this.holdMouse = holdMouse.isSelected();
+        });
+
         jPanel.add(numberLabel);
         jPanel.add(number);
         jPanel.add(maxNumberLabel);
@@ -65,6 +71,8 @@ public class BBMenu implements Runnable{
         jPanel.add(averageRadius);
         jPanel.add(new Label("Turn on trace:"));
         jPanel.add(trace);
+        jPanel.add(new Label("Hold the mouse:"));
+        jPanel.add(holdMouse);
         if (JOptionPane.showConfirmDialog(null, jPanel, "Bouncing Balls mode settings", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION) {
             return;
         }
@@ -79,4 +87,6 @@ public class BBMenu implements Runnable{
     public int getNumber() {return number; }
 
     public boolean isTrace() {return trace; }
+
+    public boolean isHoldMouse() {return holdMouse; }
 }

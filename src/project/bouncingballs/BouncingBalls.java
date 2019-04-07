@@ -15,12 +15,15 @@ public class BouncingBalls {
     private BBMouse mouse = new BBMouse();
     private boolean mouseButton1 = false;
     private List<ClickAnimation> animations= new ArrayList<>();
+    private boolean holdMouse;
 
-    public BouncingBalls(int number, int divNumber, int maxNumber, int averageRadius, boolean traceON){
+    public BouncingBalls(int number, int divNumber, int maxNumber,
+                         int averageRadius, boolean traceON, boolean holdMouse){
         this.divNumber = divNumber;
         this.maxNumber = maxNumber;
         this.averageRadius = (float)averageRadius;
         this.traceON = traceON;
+        this.holdMouse = holdMouse;
         initParticleList(number);
     }
 
@@ -41,7 +44,7 @@ public class BouncingBalls {
             float newRadiusSquare = 0;
 
             for(Ball ball : ballList){
-                if(delList.size() == ballList.size() - 9){
+                if(delList.size() == ballList.size()-1){
                     break;
                 }
                 if(MathUtils.distance(ball.getX(),ball.getY(),Mouse.getX(),Display.getHeight() - Mouse.getY() ) <= mouse.getRadius()){
@@ -73,7 +76,9 @@ public class BouncingBalls {
             animations.remove(animation);
         }
 
-        mouseButton1 = Mouse.isButtonDown(0);
+        if(!holdMouse) {
+            mouseButton1 = Mouse.isButtonDown(0);
+        }
 
         List<Ball> delList1 = new ArrayList<>();
         List<Ball> delList2 = new ArrayList<>();
