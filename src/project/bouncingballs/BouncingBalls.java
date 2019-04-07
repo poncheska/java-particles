@@ -1,9 +1,8 @@
 package project.bouncingballs;
 
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.Renderable;
 import org.lwjgl.util.vector.Vector2f;
-
+import org.lwjgl.input.Mouse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,9 @@ public class BouncingBalls {
     private int maxNumber;
     private float averageRadius;
     private boolean traceON;
+    private BBMouse mouse = new BBMouse();
+    private boolean mouseButton1 = false;
+    private List<ClickAnimation> animations= new ArrayList<>();
 
     public BouncingBalls(int number, int divNumber, int maxNumber, int averageRadius, boolean traceON){
         this.divNumber = divNumber;
@@ -28,9 +30,55 @@ public class BouncingBalls {
         }
     }
 
+
+
+
     public void render(){
+        mouse.render();
+        if (Mouse.isButtonDown(0) && !mouseButton1)
+        {
+            List<Ball> delList = new ArrayList<>();
+            float newRadiusSquare = 0;
+
+            for(Ball ball : ballList){
+                if(delList.size() == ballList.size() - 9){
+                    break;
+                }
+                if(MathUtils.distance(ball.getX(),ball.getY(),Mouse.getX(),Display.getHeight() - Mouse.getY() ) <= mouse.getRadius()){
+                    delList.add(ball);
+                    newRadiusSquare += ball.getRadius() * ball.getRadius();
+                }
+            }
+
+            if(!(delList.isEmpty())){
+                for(Ball ball:delList){
+                    ballList.remove(ball);
+                }
+                ballList.add(new Ball(Mouse.getX(),Display.getHeight() - Mouse.getY() ,
+                        (float)Math.sqrt(newRadiusSquare),traceON));
+                animations.add(new ClickAnimation(Mouse.getX(),Display.getHeight() - Mouse.getY(),
+                        mouse.getRadius(),(float)Math.sqrt(newRadiusSquare)));
+            }
+        }
+
+        List<ClickAnimation> animDelList= new ArrayList<>();
+
+        for(ClickAnimation animation:animations){
+            animation.render();
+            if(animation.getParts() == 0){
+                animDelList.add(animation);
+            }
+        }
+        for(ClickAnimation animation:animDelList){
+            animations.remove(animation);
+        }
+
+        mouseButton1 = Mouse.isButtonDown(0);
+
         List<Ball> delList1 = new ArrayList<>();
         List<Ball> delList2 = new ArrayList<>();
+
+
         for(Ball ball : ballList){
             ball.render();
             ball.tick();

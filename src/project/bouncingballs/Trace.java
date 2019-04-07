@@ -40,7 +40,7 @@ public class Trace {
         }
         for(Vector2f tr:randTrace){
             float color = (float)randTrace.indexOf(tr)/(float)(TRACE_LENGTH*10);
-            GL11.glColor4f(color, color, color, 1.0f);
+            GL11.glColor4f(color, color, color, 0.0f);
             GL11.glPointSize(partSize);
             GL11.glBegin(GL11.GL_POINTS);
             GL11.glVertex2f(tr.getX(), tr.getY());
@@ -70,8 +70,8 @@ public class Trace {
         for(int i = 0; i < (int) (Math.random()*20); i++){
             randTrace.add(new Vector2f(position.getX() + vectorN.getX()*(float)(lengthN1 - 2*lengthN1*Math.random())
                     -(float)(velocity.getX()/lengthN *radius * Math.random()),
-                    position.getY() + vectorN.getY()*(float)(lengthN1 - 2*lengthN1*Math.random()
-                            -(float)(velocity.getY()/lengthN *radius * Math.random()))));
+                    position.getY() + vectorN.getY()*(float)(lengthN1 - 2*lengthN1*Math.random())
+                            -(float)(velocity.getY()/lengthN *radius * Math.random())));
         }
     }
 }
