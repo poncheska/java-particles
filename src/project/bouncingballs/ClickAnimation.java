@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class ClickAnimation {
     private float minRadius;
     private float maxRadius;
-    private final int CIRCLE_PARTS = 50;
-    private final float ANIMATION_LENGTH = 10;
+    private final int CIRCLE_PARTS = 200;
+    private final float ANIMATION_LENGTH = 20;
     private float parts = ANIMATION_LENGTH;
     private float delta;
     private float x;
@@ -25,15 +25,18 @@ public class ClickAnimation {
 
     public void render(){
         float radius = maxRadius + delta *parts;
-        float partSize = radius/20;
+        float partSize = radius/40;
         GL11.glColor4f((float)(parts/ANIMATION_LENGTH), (float)(parts/ANIMATION_LENGTH),
                 (float)(parts/ANIMATION_LENGTH), 1.0f);
         GL11.glPointSize(partSize);
         GL11.glBegin(GL11.GL_POINTS);
         for(int i = 0; i < CIRCLE_PARTS;i++){
-            float angle =(float) (2f * Math.PI * i /CIRCLE_PARTS) ;
-            GL11.glVertex2f((float) (x + radius * Math.cos(angle)),
-                    (float) (y + radius * Math.sin(angle)));
+            if(Math.random()<0.51d){
+                float r = radius * 0.9f + (float) (radius * 0.2f *Math.random());
+                float angle =(float) (2f * Math.PI * i /CIRCLE_PARTS) ;
+                GL11.glVertex2f((float) (x + r * Math.cos(angle)),
+                        (float) (y + r * Math.sin(angle)));
+                }
         }
         GL11.glEnd();
         parts --;
