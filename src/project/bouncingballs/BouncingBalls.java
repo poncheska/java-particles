@@ -114,14 +114,15 @@ public class BouncingBalls {
             for(Ball ball1 : ballList){
                 float distance = MathUtils.distance(ball.getX(), ball.getY(), ball1.getX(), ball1.getY());
                 if(ball != ball1 && distance <= ball.getRadius() + ball1.getRadius()){
-                    ball.setPosition(MathUtils.changePosition(ball.getX(), ball.getY(), ball1.getX(),
-                            ball1.getY(), ball.getRadius(), ball1.getRadius()));
-                    ball.hit(ball1.getX(), ball1.getY());
-                    ball.setVelocity(MathUtils.velocityCalc(ball.getX(), ball.getY(), ball1.getX(),
-                            ball1.getY(), ball.getVelocity()));
-                    ball1.hit(ball.getX(), ball.getY());
-                    ball1.setVelocity(MathUtils.velocityCalc(ball1.getX(), ball1.getY(), ball.getX(),
-                            ball.getY(), ball1.getVelocity()));
+                    float bX =ball.getX();
+                    float bY =ball.getY();
+                    float b1X =ball1.getX();
+                    float b1Y =ball1.getY();
+                    ball.setPosition(MathUtils.changePosition(bX, bY, b1X, b1Y, ball.getRadius(), ball1.getRadius()));
+                    ball.hit(b1X, b1Y);
+                    ball.setVelocity(MathUtils.velocityCalc(bX, bY, b1X, b1Y, ball.getVelocity()));
+                    ball1.hit(bX, bY);
+                    ball1.setVelocity(MathUtils.velocityCalc(b1X, b1Y, bX, bY, ball1.getVelocity()));
                     if(!delList1.contains(ball) && !delList2.contains(ball) &&
                             !delList1.contains(ball1) && !delList2.contains(ball1)){
                         if(ballList.size() > 100 && ball.getVelocityNum() + ball1.getVelocityNum() > 14f){
