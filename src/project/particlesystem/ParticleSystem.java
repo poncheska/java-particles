@@ -67,8 +67,8 @@ public class ParticleSystem {
         float distance = Link.distance(pos1,pos2);
 
         if(linked){
-            float x=(pos2.getX()-pos1.getX())*(distance-linkRange/2)/(linkRange/2)/500;
-            float y=(pos2.getY()-pos1.getY())*(distance-linkRange/2)/(linkRange/2)/500;
+            float x=(pos2.getX()-pos1.getX())*(distance-linkRange*3/4)/(linkRange/2)/500;
+            float y=(pos2.getY()-pos1.getY())*(distance-linkRange*3/4)/(linkRange/2)/500;
             return new Vector2f(x,y);
         }
 
