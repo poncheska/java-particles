@@ -4,9 +4,12 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector2f;
 import project.bouncingballs.BBMenu;
 import project.bouncingballs.BouncingBalls;
+import project.particlesystem.Link;
 import project.particlesystem.Particle;
+import project.particlesystem.ParticleSystem;
 import project.particlesystem.typesofparticles.*;
 
 import java.awt.Dimension;
@@ -54,14 +57,12 @@ public class Application {
                 break;
             case 2:
 
-                Particle[] particles = {new ParticleType1(200,200), new ParticleType2(400,200), new ParticleType3(600,200)};
+                ParticleSystem ps = new ParticleSystem(100);
+
 
                 while(!Display.isCloseRequested()){
                     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-                    for(Particle particle:particles) {
-                        particle.render();
-                    }
-
+                    ps.render();
                     Display.update();
                     Display.sync(60);
                 }

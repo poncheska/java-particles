@@ -24,10 +24,10 @@ public class BouncingBalls {
         this.averageRadius = (float)averageRadius;
         this.traceON = traceON;
         this.holdMouse = holdMouse;
-        initParticleList(number);
+        initBallList(number);
     }
 
-    public void initParticleList(int number){
+    public void initBallList(int number){
         for(int i = 0; i<number;i++){
             ballList.add(Ball.generateParticle(averageRadius, traceON));
         }
