@@ -9,18 +9,23 @@ import project.particlesystem.typesofparticles.ParticleType1;
 import project.particlesystem.typesofparticles.ParticleType2;
 import project.particlesystem.typesofparticles.ParticleType3;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public abstract class Particle {
     private int[] maxLinks = new int[3];
     private int[] links = new int[3];
+    private List<Integer> linkedParticles = new ArrayList<>();
+    private int index;
     private Vector2f position;
     private int animCount;
     private final int CIRCLE_PARTS = 1000;
     private Vector2f velocity;
     private float radius;
 
-    public Particle(float x, float y){
+    public Particle(float x, float y, int index){
+        this.index = index;
 
         this.position = new Vector2f(x,y);
 
@@ -29,6 +34,20 @@ public abstract class Particle {
 
         this.velocity = new Vector2f((float) (Math.random() * 2.0f - 1.0f)*2f, (float) (Math.random() * 2.0f - 1.0f)*2f);
 
+    }
+
+    public void addLinkedParticle(Integer num){
+        linkedParticles.add(num);
+    }
+
+    public void removeLinkedParticle(Integer num){
+        linkedParticles.remove(num);
+    }
+
+    public int getIndex(){return index; }
+
+    public boolean isLinkedWith(int index){
+        return linkedParticles.contains(index);
     }
 
     public void setRadius(float radius) {
@@ -61,16 +80,31 @@ public abstract class Particle {
 
     public void setPosition(Vector2f position) {this.position = position; }
 
+    public void applyAcceleration(Vector2f acceleration){
+        velocity.x += acceleration.x;
+        velocity.y += acceleration.y;
+    }
+
     public abstract Vector3f getColor();
 
     public void tick(){
         position.x += velocity.x;
         position.y += velocity.y;
-        if(position.x < radius || position.x > Display.getWidth() - radius){
+        if(position.x > Display.getWidth() - radius && velocity.x>0){
             velocity.x = -velocity.x;
+            position.x = Display.getWidth() - radius;
         }
-        if(position.y < radius || position.y > Display.getHeight() - radius){
+        if(position.x < radius && velocity.x<0){
+            velocity.x = -velocity.x;
+            position.x = radius;
+        }
+        if(position.y < radius && velocity.y<0){
             velocity.y = -velocity.y;
+            position.y = radius;
+        }
+        if(position.y > Display.getHeight() - radius && velocity.y>0){
+            velocity.y = -velocity.y;
+            position.y = Display.getHeight() - radius;
         }
     }
 
@@ -98,20 +132,20 @@ public abstract class Particle {
     }
 
 
-    public static Particle generateParticle(){
+    public static Particle generateParticle(int index){
         Random random =new Random();
         float x = random.nextInt((int)(Display.getWidth() - 2*7 -1)) + 7;
         float y = random.nextInt((int)(Display.getHeight() - 2*7 -1)) + 7;
-        Particle particle = new ParticleType1(x,y);
+        Particle particle = new ParticleType1(x,y,index);
         switch (random.nextInt(3)+1){
             case 1:
-                particle = new ParticleType1(x,y);
+                particle = new ParticleType1(x,y,index);
                 break;
             case 2:
-                particle = new ParticleType2(x,y);
+                particle = new ParticleType2(x,y,index);
                 break;
             case 3:
-                particle = new ParticleType3(x,y);
+                particle = new ParticleType3(x,y,index);
                 break;
         }
         return particle;
@@ -126,10 +160,14 @@ public abstract class Particle {
     public static void linking(Particle p1, Particle p2){
         p1.increaseLinks(p2.getTYPE());
         p2.increaseLinks(p1.getTYPE());
+        p1.addLinkedParticle(p2.getIndex());
+        p2.addLinkedParticle(p1.getIndex());
     }
 
     public static void separation(Particle p1, Particle p2){
         p1.reduceLinks(p2.getTYPE());
         p2.reduceLinks(p1.getTYPE());
+        p1.removeLinkedParticle(p2.getIndex());
+        p2.removeLinkedParticle(p1.getIndex());
     }
 }

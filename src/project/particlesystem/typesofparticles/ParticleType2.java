@@ -12,8 +12,8 @@ public class ParticleType2 extends Particle {
     private float radius = 7;
 
 
-    public ParticleType2(float x, float y){
-        super(x,y);
+    public ParticleType2(float x, float y, int index){
+        super(x,y,index);
         setMaxLinks(maxLinks);
         setRadius(radius);
     }
