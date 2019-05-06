@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector2f;
 import project.bouncingballs.BBMenu;
 import project.bouncingballs.BouncingBalls;
 import project.particlesystem.Link;
+import project.particlesystem.PMenu;
 import project.particlesystem.Particle;
 import project.particlesystem.ParticleSystem;
 import project.particlesystem.typesofparticles.*;
@@ -18,7 +19,7 @@ import java.awt.Toolkit;
 public class Application {
     public static void main(String[] args){
         Menu menu = new Menu();
-        BBMenu bbMenu = new BBMenu();
+
         menu.run();
         try {
             if(menu.getFullScreen()){
@@ -41,6 +42,7 @@ public class Application {
 
         switch (menu.getMode()){
             case 1:
+                BBMenu bbMenu = new BBMenu();
                 bbMenu.run();
 
                 BouncingBalls bb = new BouncingBalls(bbMenu.getNumber(),bbMenu.getDivNumber(),
@@ -56,8 +58,10 @@ public class Application {
                 }
                 break;
             case 2:
+                PMenu pMenu = new PMenu();
+                pMenu.run();
 
-                ParticleSystem ps = new ParticleSystem(100);
+                ParticleSystem ps = new ParticleSystem(pMenu.getNumber(),pMenu.isMouse(),pMenu.getLinkLength());
 
 
                 while(!Display.isCloseRequested()){

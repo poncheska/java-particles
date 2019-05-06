@@ -1,5 +1,7 @@
 package project.particlesystem;
 
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
@@ -7,11 +9,18 @@ import java.util.List;
 
 public class ParticleSystem {
 
-    List<Particle> particleList = new ArrayList<>();
-    List<Link> linkList = new ArrayList<>();
+    private List<Particle> particleList = new ArrayList<>();
+    private List<Link> linkList = new ArrayList<>();
+    private PMouse mouse = new PMouse();
+    private boolean mouseButton1 = false;
+    private boolean mouseOn;
+    private float linkRange;
 
 
-    public ParticleSystem(int number){
+
+    public ParticleSystem(int number, boolean mouseOn,float linkRange){
+        this.mouseOn = mouseOn;
+        this.linkRange = linkRange;
         initParticleList(number);
     }
 
@@ -22,8 +31,33 @@ public class ParticleSystem {
     }
 
 
-    private float linkRange = 100;
+    private float clickPower = 0;
+
     public void render() {
+        if(mouseOn) {
+            if (clickPower < 1f && Mouse.isButtonDown(0)) {
+                clickPower += 0.005f;
+            }
+
+            mouse.render(clickPower);
+            if (!Mouse.isButtonDown(0) && mouseButton1) {
+                Vector2f mousePos = new Vector2f(Mouse.getX(), Display.getHeight() - Mouse.getY());
+                for (Particle particle : particleList) {
+                    if (Link.distance(mousePos, particle.getPosition()) < mouse.getRadius()) {
+                        float xa = (particle.getPosition().x - mousePos.x) /
+                                Link.distance(mousePos, particle.getPosition()) * clickPower * 20;
+                        float ya = (particle.getPosition().y - mousePos.y) /
+                                Link.distance(mousePos, particle.getPosition()) * clickPower * 20;
+                        particle.applyAcceleration(new Vector2f(xa, ya));
+                    }
+                }
+                clickPower = 0;
+            }
+
+
+            mouseButton1 = Mouse.isButtonDown(0);
+        }
+
         List<Link> delLinkList = new ArrayList<>();
 
 

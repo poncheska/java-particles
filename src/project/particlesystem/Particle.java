@@ -23,6 +23,7 @@ public abstract class Particle {
     private final int CIRCLE_PARTS = 1000;
     private Vector2f velocity;
     private float radius;
+    private float velocityReduction = 0.99999f;
 
     public Particle(float x, float y, int index){
         this.index = index;
@@ -81,8 +82,8 @@ public abstract class Particle {
     public void setPosition(Vector2f position) {this.position = position; }
 
     public void applyAcceleration(Vector2f acceleration){
-        velocity.x += acceleration.x;
-        velocity.y += acceleration.y;
+        velocity.x = velocity.x * velocityReduction + acceleration.x;
+        velocity.y = velocity.y * velocityReduction + acceleration.y;
     }
 
     public abstract Vector3f getColor();

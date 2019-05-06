@@ -2,6 +2,7 @@ package project.bouncingballs;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
+import project.RenderTool;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,6 +23,8 @@ public class Trace {
     public void render(Vector2f velocity, Vector2f position){
 
         addTracePart(velocity, position);
+
+//        RenderTool.traceRender(leftTrace,partSize);
         for(Vector2f tr:leftTrace){
             float color = (float)leftTrace.indexOf(tr)/(float)TRACE_LENGTH;
             GL11.glColor4f(color, color, color, 1.0f);
@@ -30,6 +33,7 @@ public class Trace {
             GL11.glVertex2f(tr.getX(), tr.getY());
             GL11.glEnd();
         }
+//        RenderTool.traceRender(rightTrace,partSize);
         for(Vector2f tr:rightTrace){
             float color = (float)rightTrace.indexOf(tr)/(float)TRACE_LENGTH;
             GL11.glColor4f(color, color, color, 1.0f);
@@ -38,6 +42,7 @@ public class Trace {
             GL11.glVertex2f(tr.getX(), tr.getY());
             GL11.glEnd();
         }
+//        RenderTool.traceRender(randTrace,partSize);
         for(Vector2f tr:randTrace){
             float color = (float)randTrace.indexOf(tr)/(float)(TRACE_LENGTH*10);
             GL11.glColor4f(color, color, color, 0.0f);

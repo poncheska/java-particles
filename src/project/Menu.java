@@ -7,7 +7,7 @@ public class Menu implements Runnable{
     private int width = 1280;
     private int height = 720;
     private boolean fullScreen = false;
-    private int mode = 2;
+    private int mode = 1;
     public void run(){
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new GridLayout( 4, 2));
@@ -35,7 +35,7 @@ public class Menu implements Runnable{
 
         JLabel modeLabel = new JLabel("Bouncing Balls");
 
-        JSlider mode = new JSlider(SwingConstants.HORIZONTAL,1, 2, 2);
+        JSlider mode = new JSlider(SwingConstants.HORIZONTAL,1, 2, 1);
         mode.addChangeListener(e -> {
             switch(mode.getValue()){
                 case(1):
