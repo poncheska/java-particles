@@ -19,6 +19,7 @@ import java.awt.Toolkit;
 public class Application {
     public static void main(String[] args){
         Menu menu = new Menu();
+        Frames fps = new Frames();
 
         menu.run();
         try {
@@ -29,6 +30,7 @@ public class Application {
                 Display.setDisplayMode(new DisplayMode(menu.getWidth(), menu.getHeight()));
             }
             Display.create();
+            fps.initFont();
         }catch (LWJGLException e){
             e.printStackTrace();
             System.exit(0);
@@ -47,10 +49,12 @@ public class Application {
 
                 BouncingBalls bb = new BouncingBalls(bbMenu.getNumber(),bbMenu.getDivNumber(),
                         bbMenu.getMaxNumber(),bbMenu.getAverageRadius(),bbMenu.isTrace(),bbMenu.isHoldMouse());
-
+                fps.setLastFPS();
                 while(!Display.isCloseRequested()){
                     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
                     bb.render();
+                    fps.updateFPS();
+
 
 
                     Display.update();
@@ -60,13 +64,16 @@ public class Application {
             case 2:
                 PMenu pMenu = new PMenu();
                 pMenu.run();
+                fps.updateFPS();
 
                 ParticleSystem ps = new ParticleSystem(pMenu.getNumber(),pMenu.isMouse(),pMenu.getLinkLength());
 
-
+                fps.setLastFPS();
                 while(!Display.isCloseRequested()){
                     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
                     ps.render();
+                    fps.updateFPS();
+
                     Display.update();
                     Display.sync(60);
                 }
